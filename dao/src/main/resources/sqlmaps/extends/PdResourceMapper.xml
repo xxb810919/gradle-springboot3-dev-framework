@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.test.dao.PdResourceMapper" >
+
+    <update id="revertFromRecycle">
+        update pd_resource
+        set recycle_date = null, delete_status=0
+        WHERE id=#{id,jdbcType=BIGINT}
+    </update>
+    <update id="batchUpdateDeleteStatus">
+        update pd_resource
+        set delete_status=2
+        WHERE user_id=#{userId,jdbcType=BIGINT}
+        AND delete_status=1
+        <if test="ids != null" >
+            AND id in
+            <foreach collection="ids" item="id" separator="," close=")" open="(" >
+                #{id,jdbcType=BIGINT}
+            </foreach>
+        </if>
+    </update>
+
+    <update id="batchMoveToFolderStatus">
+        update pd_resource
+        set f_id=#{folderId, jdbcType=BIGINT}
+        WHERE user_id=#{userId,jdbcType=BIGINT}
+        <if test="ids != null" >
+            AND id in
+            <foreach collection="ids" item="id" separator="," close=")" open="(" >
+                #{id,jdbcType=BIGINT}
+            </foreach>
+        </if>
+    </update>
+
+    <update id="batchRecycleByParentId">
+        UPDATE pd_resource
+        set delete_status= 1
+        AND recycle_date = (UNIX_TIMESTAMP(NOW()) * 1000)
+        WHERE user_id =#{userId,jdbcType=BIGINT} AND
+        f_id in
+        <foreach collection="folderIds" close=")" open="(" separator="," item="fid">
+            #{fid,jdbcType=BIGINT}
+        </foreach>
+    </update>
+
+    <select id="selectPageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM pd_resource
+        <where>
+            <if test="resourceQueryBO.status != null" >
+                AND delete_status = #{resourceQueryBO.status,jdbcType=SMALLINT}
+            </if>
+            <if test="resourceQueryBO.userId != null" >
+                AND user_id =#{resourceQueryBO.userId,jdbcType=BIGINT}
+            </if>
+            <if test="resourceQueryBO.folderId != null">
+                AND f_id = #{resourceQueryBO.folderId,jdbcType=BIGINT}
+            </if>
+            <if test="resourceQueryBO.type != null">
+                AND type=#{resourceQueryBO.type,jdbcType=INTEGER}
+            </if>
+            <if test="resourceQueryBO.modifiedAfter != null">
+                <![CDATA[
+                AND modified_date >= #{resourceQueryBO.modifiedAfter,jdbcType=BIGINT}
+            ]]>
+            </if>
+            <if test="resourceQueryBO.modifiedBefore != null">
+                <![CDATA[
+            AND modified_date <= #{resourceQueryBO.modifiedBefore,jdbcType=BIGINT}
+            ]]>
+            </if>
+        </where>
+        ORDER BY
+        <choose>
+            <when test="pageQuery.orderBy == -1">
+                creation_date DESC
+            </when>
+            <when test="pageQuery.orderBy == 1">
+                modified_date DESC
+            </when>
+            <when test="pageQuery.orderBy == 2">
+                modified_date ASC
+            </when>
+            <when test="pageQuery.orderBy == 3">
+                name DESC
+            </when>
+            <when test="pageQuery.orderBy == 4">
+                name ASC
+            </when>
+            <when test="pageQuery.orderBy == 20">
+                recycle_date DESC
+            </when>
+        </choose>
+        <if test="pageQuery != null" >
+            LIMIT #{pageQuery.pageSize} OFFSET #{pageQuery.offset}
+        </if>
+    </select>
+
+    <select id="selectCount" resultType="long">
+        SELECT count(1) FROM pd_resource
+        <where>
+            <if test="resourceQueryBO.status != null" >
+                AND delete_status = #{resourceQueryBO.status,jdbcType=SMALLINT}
+            </if>
+            <if test="resourceQueryBO.userId != null" >
+                AND user_id =#{resourceQueryBO.userId,jdbcType=BIGINT}
+            </if>
+            <if test="resourceQueryBO.folderId != null">
+                AND f_id = #{resourceQueryBO.folderId,jdbcType=BIGINT}
+            </if>
+            <if test="resourceQueryBO.type != null">
+                AND type=#{resourceQueryBO.type,jdbcType=INTEGER}
+            </if>
+            <if test="resourceQueryBO.modifiedAfter != null">
+                <![CDATA[
+                AND modified_date >= #{resourceQueryBO.modifiedAfter,jdbcType=BIGINT}
+            ]]>
+            </if>
+            <if test="resourceQueryBO.modifiedBefore != null">
+                <![CDATA[
+            AND modified_date <= #{resourceQueryBO.modifiedBefore,jdbcType=BIGINT}
+            ]]>
+            </if>
+        </where>
+    </select>
+    <select id="selectListByFolderIds" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM pd_resource
+        where f_id in
+        <foreach collection="folderIds" close=")" open="(" separator="," item="fid">
+            #{fid,jdbcType=BIGINT}
+        </foreach>
+    </select>
+
+    <update id="batchRecycleAll">
+        UPDATE pd_resource
+        set delete_status= 1
+        AND recycle_date = (UNIX_TIMESTAMP(NOW()) * 1000)
+        WHERE user_id =#{userId,jdbcType=BIGINT} and f_id != 0
+    </update>
+
+</mapper>

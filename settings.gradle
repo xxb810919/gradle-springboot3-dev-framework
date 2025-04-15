@@ -1,0 +1,16 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+        google()
+    }
+}
+
+rootProject.name = 'springboot3-dev-framework'
+
+include 'main'
+include 'web'
+include 'service'
+include 'dao'
+include 'common'
+

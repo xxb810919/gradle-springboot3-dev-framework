@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.dao.PdCategorySpecKeyMapper">
+  <resultMap id="BaseResultMap" type="com.test.entity.PdCategorySpecKey">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="category_id" jdbcType="BIGINT" property="categoryId" />
+    <result column="sepc_key_id" jdbcType="BIGINT" property="sepcKeyId" />
+    <result column="is_required" jdbcType="BIT" property="isRequired" />
+    <result column="data_type" jdbcType="VARCHAR" property="dataType" />
+    <result column="show_type" jdbcType="VARCHAR" property="showType" />
+    <result column="placeholder" jdbcType="VARCHAR" property="placeholder" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, category_id, sepc_key_id, is_required, data_type, show_type, placeholder, sort, 
+    create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pd_category_spec_key
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from pd_category_spec_key
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.test.entity.PdCategorySpecKey" useGeneratedKeys="true">
+    insert into pd_category_spec_key (category_id, sepc_key_id, is_required, 
+      data_type, show_type, placeholder, 
+      sort, create_time, update_time
+      )
+    values (#{categoryId,jdbcType=BIGINT}, #{sepcKeyId,jdbcType=BIGINT}, #{isRequired,jdbcType=BIT}, 
+      #{dataType,jdbcType=VARCHAR}, #{showType,jdbcType=VARCHAR}, #{placeholder,jdbcType=VARCHAR}, 
+      #{sort,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.test.entity.PdCategorySpecKey" useGeneratedKeys="true">
+    insert into pd_category_spec_key
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="sepcKeyId != null">
+        sepc_key_id,
+      </if>
+      <if test="isRequired != null">
+        is_required,
+      </if>
+      <if test="dataType != null">
+        data_type,
+      </if>
+      <if test="showType != null">
+        show_type,
+      </if>
+      <if test="placeholder != null">
+        placeholder,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="sepcKeyId != null">
+        #{sepcKeyId,jdbcType=BIGINT},
+      </if>
+      <if test="isRequired != null">
+        #{isRequired,jdbcType=BIT},
+      </if>
+      <if test="dataType != null">
+        #{dataType,jdbcType=VARCHAR},
+      </if>
+      <if test="showType != null">
+        #{showType,jdbcType=VARCHAR},
+      </if>
+      <if test="placeholder != null">
+        #{placeholder,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.test.entity.PdCategorySpecKey">
+    update pd_category_spec_key
+    <set>
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="sepcKeyId != null">
+        sepc_key_id = #{sepcKeyId,jdbcType=BIGINT},
+      </if>
+      <if test="isRequired != null">
+        is_required = #{isRequired,jdbcType=BIT},
+      </if>
+      <if test="dataType != null">
+        data_type = #{dataType,jdbcType=VARCHAR},
+      </if>
+      <if test="showType != null">
+        show_type = #{showType,jdbcType=VARCHAR},
+      </if>
+      <if test="placeholder != null">
+        placeholder = #{placeholder,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.test.entity.PdCategorySpecKey">
+    update pd_category_spec_key
+    set category_id = #{categoryId,jdbcType=BIGINT},
+      sepc_key_id = #{sepcKeyId,jdbcType=BIGINT},
+      is_required = #{isRequired,jdbcType=BIT},
+      data_type = #{dataType,jdbcType=VARCHAR},
+      show_type = #{showType,jdbcType=VARCHAR},
+      placeholder = #{placeholder,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

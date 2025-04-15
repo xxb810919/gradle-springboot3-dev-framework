@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.test.dao.PdFavorProjectMapper" >
+    <delete id="deleteByUserId">
+        DELETE FROM pd_favor_project WHERE user_id =#{userId,jdbcType=BIGINT}
+        <if test="ids != null">
+            AND id in
+            <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                #{id,jdbcType=BIGINT}
+            </foreach>
+        </if>
+    </delete>
+
+    <select id="getOneByResourceId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM pd_favor_project
+        where source_id =#{sourceId,jdbcType=BIGINT}
+        AND source_type =#{sourceType,jdbcType=INTEGER}
+        AND user_id=#{userId,jdbcType=BIGINT}
+        limit 1
+    </select>
+    <select id="selectPage" resultMap="BaseResultMap">
+        select pfp.id as id, pfp.source_id as source_id, pfp.source_type as source_type,
+        CASE
+        WHEN pfp.source_type = 0 THEN t1.name
+        WHEN pfp.source_type != 0 THEN t2.name
+        END as name,
+        CASE
+        WHEN pfp.source_type = 0 THEN ""
+        WHEN pfp.source_type != 0 THEN t2.thumb_url
+        END as thumbUrl,
+        CASE
+        WHEN pfp.source_type = 0 THEN "0"
+        WHEN pfp.source_type != 0 THEN t2.category_display_name
+        END as categoryDisplayName,
+        CASE
+        WHEN pfp.source_type = 0 THEN t1.creation_date
+        WHEN pfp.source_type != 0 THEN t2.creation_date
+        END as creationDate,
+        CASE
+        WHEN pfp.source_type = 0 THEN t1.modified_date
+        WHEN pfp.source_type != 0 THEN t2.modified_date
+        END as modifiedDate
+        FROM pd_favor_project pfp
+        LEFT JOIN pd_folder  t1 ON pfp.source_type = 0 AND pfp.source_id = t1.id
+        LEFT JOIN pd_resource  t2 on pfp.source_id = t2.id AND t2.delete_status  = 0
+        where pfp.user_id = #{userId,jdbcType=BIGINT}
+        order by pfp.create_time desc
+
+    </select>
+    <select id="selectCount" resultType="java.lang.Long">
+        select count(1)
+        FROM pd_favor_project pfp
+        LEFT JOIN pd_folder  t1 ON pfp.source_type = 0 AND pfp.source_id = t1.id
+        LEFT JOIN pd_resource  t2 on pfp.source_id = t2.id AND t2.delete_status  = 0
+        where pfp.user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectOne" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM pd_favor_project WHERE
+        user_id = #{userId,jdbcType=BIGINT}
+        AND source_id =#{sourceId,jdbcType=BIGINT}
+        AND source_type=#{sourceType,jdbcType=BIGINT}
+    </select>
+</mapper>

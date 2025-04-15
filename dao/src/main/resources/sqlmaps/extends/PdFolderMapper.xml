@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.test.dao.PdFolderMapper" >
+
+    <update id="updateBatchParentId">
+        update pd_folder
+        <set>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=BIGINT},
+            </if>
+            <if test="modifiedDate != null">
+                modified_date = #{modifiedDate,jdbcType=BIGINT},
+            </if>
+            <if test="path != null">
+                path = #{path,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id in
+        <foreach collection="folderId" separator="," open="(" close=")" item="id">
+            #{id,jdbcType=BIGINT}
+        </foreach>
+    </update>
+    <update id="updateBatchPath">
+        update pd_folder pf set path=replace(path, #{originalPath,jdbcType=VARCHAR},
+        #{targetPath,jdbcType=VARCHAR}) where path like #{originalPathLike,jdbcType=VARCHAR};
+    </update>
+    <delete id="deleteByUserId">
+        DELETE from pd_folder WHERE user_id=#{userId,jdbcType=BIGINT}
+    </delete>
+
+    <delete id="batchDeleteByIds">
+        DELETE from pd_folder WHERE id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+
+    <select id="selectByParentId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM pd_folder
+        WHERE user_id =#{userId,jdbcType=BIGINT}
+        <if test="parentId != null">
+            AND parent_id = #{parentId,jdbcType=BIGINT}
+        </if>
+        <if test="modifiedAfter != null">
+            <![CDATA[
+                AND modified_date >= #{modifiedAfter,jdbcType=BIGINT}
+            ]]>
+        </if>
+        <if test="modifiedBefore != null">
+            <![CDATA[
+            AND modified_date <= #{modifiedBefore,jdbcType=BIGINT}
+            ]]>
+        </if>
+        ORDER BY
+        <choose>
+            <when test="orderBy == -1">
+                creation_date DESC
+            </when>
+            <when test="orderBy == 1">
+                modified_date DESC
+            </when>
+            <when test="orderBy == 2">
+                modified_date ASC
+            </when>
+            <when test="orderBy == 3">
+                name DESC
+            </when>
+            <when test="orderBy == 4">
+                name ASC
+            </when>
+            <otherwise>
+                id ASC
+            </otherwise>
+        </choose>
+    </select>
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM pd_folder WHERE id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id,jdbcType=BIGINT}
+        </foreach>
+    </select>
+    <select id="selectChildByPath" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/> FROM pd_folder WHERE path like #{path,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectCountGroupParentId" resultType="com.test.entity.PdFolderChildCount">
+        select count(*) as count,parent_id as parentId from pd_folder pf where user_id=#{userId,jdbcType=BIGINT}
+        group by pf.parent_id;
+    </select>
+</mapper>

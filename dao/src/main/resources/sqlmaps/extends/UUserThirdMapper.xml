@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.test.dao.UUserThirdMapper" >
+
+
+    <select id="selectOneByThirdId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM u_user_third WHERE
+        third_id =#{thirdId,jdbcType=VARCHAR} AND login_type=#{loginMode,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectListByUserId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM u_user_third WHERE
+        user_id =#{userId,jdbcType=BIGINT}
+    </select>
+</mapper>

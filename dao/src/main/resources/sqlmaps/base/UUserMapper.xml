@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.dao.UUserMapper">
+  <resultMap id="BaseResultMap" type="com.test.entity.UUser">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="avatar_color" jdbcType="TINYINT" property="avatarColor" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="gender" jdbcType="INTEGER" property="gender" />
+    <result column="language" jdbcType="VARCHAR" property="language" />
+    <result column="birthday" jdbcType="VARCHAR" property="birthday" />
+    <result column="is_active" jdbcType="BIT" property="isActive" />
+    <result column="is_enable" jdbcType="BIT" property="isEnable" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="active_time" jdbcType="TIMESTAMP" property="activeTime" />
+    <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <result column="last_logout_time" jdbcType="TIMESTAMP" property="lastLogoutTime" />
+    <result column="is_free_trial_used" jdbcType="SMALLINT" property="isFreeTrialUsed" />
+    <result column="register_time" jdbcType="TIMESTAMP" property="registerTime" />
+    <result column="register_type" jdbcType="TINYINT" property="registerType" />
+    <result column="is_mail_subscription" jdbcType="BIT" property="isMailSubscription" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, nickname, username, avatar, avatar_color, email, gender, language, birthday, 
+    is_active, is_enable, create_time, update_time, active_time, last_login_time, last_logout_time, 
+    is_free_trial_used, register_time, register_type, is_mail_subscription
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from u_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from u_user
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.test.entity.UUser" useGeneratedKeys="true">
+    insert into u_user (nickname, username, avatar, 
+      avatar_color, email, gender, 
+      language, birthday, is_active, 
+      is_enable, create_time, update_time, 
+      active_time, last_login_time, last_logout_time, 
+      is_free_trial_used, register_time, register_type, 
+      is_mail_subscription)
+    values (#{nickname,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, 
+      #{avatarColor,jdbcType=TINYINT}, #{email,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, 
+      #{language,jdbcType=VARCHAR}, #{birthday,jdbcType=VARCHAR}, #{isActive,jdbcType=BIT}, 
+      #{isEnable,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{activeTime,jdbcType=TIMESTAMP}, #{lastLoginTime,jdbcType=TIMESTAMP}, #{lastLogoutTime,jdbcType=TIMESTAMP}, 
+      #{isFreeTrialUsed,jdbcType=SMALLINT}, #{registerTime,jdbcType=TIMESTAMP}, #{registerType,jdbcType=TINYINT}, 
+      #{isMailSubscription,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.test.entity.UUser" useGeneratedKeys="true">
+    insert into u_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="nickname != null">
+        nickname,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="avatar != null">
+        avatar,
+      </if>
+      <if test="avatarColor != null">
+        avatar_color,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="gender != null">
+        gender,
+      </if>
+      <if test="language != null">
+        language,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="isActive != null">
+        is_active,
+      </if>
+      <if test="isEnable != null">
+        is_enable,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="activeTime != null">
+        active_time,
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time,
+      </if>
+      <if test="lastLogoutTime != null">
+        last_logout_time,
+      </if>
+      <if test="isFreeTrialUsed != null">
+        is_free_trial_used,
+      </if>
+      <if test="registerTime != null">
+        register_time,
+      </if>
+      <if test="registerType != null">
+        register_type,
+      </if>
+      <if test="isMailSubscription != null">
+        is_mail_subscription,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null">
+        #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="avatarColor != null">
+        #{avatarColor,jdbcType=TINYINT},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="language != null">
+        #{language,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null">
+        #{isActive,jdbcType=BIT},
+      </if>
+      <if test="isEnable != null">
+        #{isEnable,jdbcType=BIT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activeTime != null">
+        #{activeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null">
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLogoutTime != null">
+        #{lastLogoutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isFreeTrialUsed != null">
+        #{isFreeTrialUsed,jdbcType=SMALLINT},
+      </if>
+      <if test="registerTime != null">
+        #{registerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="registerType != null">
+        #{registerType,jdbcType=TINYINT},
+      </if>
+      <if test="isMailSubscription != null">
+        #{isMailSubscription,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.test.entity.UUser">
+    update u_user
+    <set>
+      <if test="nickname != null">
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null">
+        avatar = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="avatarColor != null">
+        avatar_color = #{avatarColor,jdbcType=TINYINT},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        gender = #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="language != null">
+        language = #{language,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null">
+        is_active = #{isActive,jdbcType=BIT},
+      </if>
+      <if test="isEnable != null">
+        is_enable = #{isEnable,jdbcType=BIT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="activeTime != null">
+        active_time = #{activeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLogoutTime != null">
+        last_logout_time = #{lastLogoutTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isFreeTrialUsed != null">
+        is_free_trial_used = #{isFreeTrialUsed,jdbcType=SMALLINT},
+      </if>
+      <if test="registerTime != null">
+        register_time = #{registerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="registerType != null">
+        register_type = #{registerType,jdbcType=TINYINT},
+      </if>
+      <if test="isMailSubscription != null">
+        is_mail_subscription = #{isMailSubscription,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.test.entity.UUser">
+    update u_user
+    set nickname = #{nickname,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      avatar_color = #{avatarColor,jdbcType=TINYINT},
+      email = #{email,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=INTEGER},
+      language = #{language,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=VARCHAR},
+      is_active = #{isActive,jdbcType=BIT},
+      is_enable = #{isEnable,jdbcType=BIT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      active_time = #{activeTime,jdbcType=TIMESTAMP},
+      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      last_logout_time = #{lastLogoutTime,jdbcType=TIMESTAMP},
+      is_free_trial_used = #{isFreeTrialUsed,jdbcType=SMALLINT},
+      register_time = #{registerTime,jdbcType=TIMESTAMP},
+      register_type = #{registerType,jdbcType=TINYINT},
+      is_mail_subscription = #{isMailSubscription,jdbcType=BIT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

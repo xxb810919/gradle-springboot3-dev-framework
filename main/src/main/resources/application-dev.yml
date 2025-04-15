@@ -1,0 +1,13 @@
+jdbc:
+  driver: com.mysql.jdbc.Driver
+  initialPoolSize: 2
+  minPoolSize: 2
+  maxPoolSize: 5
+  maxWaitTime: 6000
+  maxIdleTime: 14400000
+  idleConnectionTestPeriod: 1800
+
+  url: jdbc:mysql://xxx:3306/xxx?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+  username: user
+  password: passwd
+  #

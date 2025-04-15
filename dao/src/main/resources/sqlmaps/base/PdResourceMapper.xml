@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.dao.PdResourceMapper">
+  <resultMap id="BaseResultMap" type="com.test.entity.PdResource">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="f_id" jdbcType="BIGINT" property="fId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="thumb_url" jdbcType="VARCHAR" property="thumbUrl" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="detail" jdbcType="VARCHAR" property="detail" />
+    <result column="delete_status" jdbcType="SMALLINT" property="deleteStatus" />
+    <result column="recycle_date" jdbcType="BIGINT" property="recycleDate" />
+    <result column="creation_date" jdbcType="BIGINT" property="creationDate" />
+    <result column="modified_date" jdbcType="BIGINT" property="modifiedDate" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="template_id" jdbcType="BIGINT" property="templateId" />
+    <result column="spec_values" jdbcType="VARCHAR" property="specValues" />
+    <result column="category_display_name" jdbcType="VARCHAR" property="categoryDisplayName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, f_id, type, url, category_id, thumb_url, name, detail, delete_status, 
+    recycle_date, creation_date, modified_date, create_time, update_time, template_id, 
+    spec_values, category_display_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pd_resource
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from pd_resource
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.test.entity.PdResource" useGeneratedKeys="true">
+    insert into pd_resource (user_id, f_id, type, 
+      url, category_id, thumb_url, 
+      name, detail, delete_status, 
+      recycle_date, creation_date, modified_date, 
+      create_time, update_time, template_id, 
+      spec_values, category_display_name)
+    values (#{userId,jdbcType=BIGINT}, #{fId,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, 
+      #{url,jdbcType=VARCHAR}, #{categoryId,jdbcType=INTEGER}, #{thumbUrl,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, #{deleteStatus,jdbcType=SMALLINT}, 
+      #{recycleDate,jdbcType=BIGINT}, #{creationDate,jdbcType=BIGINT}, #{modifiedDate,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{templateId,jdbcType=BIGINT}, 
+      #{specValues,jdbcType=VARCHAR}, #{categoryDisplayName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.test.entity.PdResource" useGeneratedKeys="true">
+    insert into pd_resource
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="fId != null">
+        f_id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="thumbUrl != null">
+        thumb_url,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="detail != null">
+        detail,
+      </if>
+      <if test="deleteStatus != null">
+        delete_status,
+      </if>
+      <if test="recycleDate != null">
+        recycle_date,
+      </if>
+      <if test="creationDate != null">
+        creation_date,
+      </if>
+      <if test="modifiedDate != null">
+        modified_date,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="templateId != null">
+        template_id,
+      </if>
+      <if test="specValues != null">
+        spec_values,
+      </if>
+      <if test="categoryDisplayName != null">
+        category_display_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="fId != null">
+        #{fId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="thumbUrl != null">
+        #{thumbUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null">
+        #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteStatus != null">
+        #{deleteStatus,jdbcType=SMALLINT},
+      </if>
+      <if test="recycleDate != null">
+        #{recycleDate,jdbcType=BIGINT},
+      </if>
+      <if test="creationDate != null">
+        #{creationDate,jdbcType=BIGINT},
+      </if>
+      <if test="modifiedDate != null">
+        #{modifiedDate,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="templateId != null">
+        #{templateId,jdbcType=BIGINT},
+      </if>
+      <if test="specValues != null">
+        #{specValues,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryDisplayName != null">
+        #{categoryDisplayName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.test.entity.PdResource">
+    update pd_resource
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="fId != null">
+        f_id = #{fId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="thumbUrl != null">
+        thumb_url = #{thumbUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null">
+        detail = #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="deleteStatus != null">
+        delete_status = #{deleteStatus,jdbcType=SMALLINT},
+      </if>
+      <if test="recycleDate != null">
+        recycle_date = #{recycleDate,jdbcType=BIGINT},
+      </if>
+      <if test="creationDate != null">
+        creation_date = #{creationDate,jdbcType=BIGINT},
+      </if>
+      <if test="modifiedDate != null">
+        modified_date = #{modifiedDate,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="templateId != null">
+        template_id = #{templateId,jdbcType=BIGINT},
+      </if>
+      <if test="specValues != null">
+        spec_values = #{specValues,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryDisplayName != null">
+        category_display_name = #{categoryDisplayName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.test.entity.PdResource">
+    update pd_resource
+    set user_id = #{userId,jdbcType=BIGINT},
+      f_id = #{fId,jdbcType=BIGINT},
+      type = #{type,jdbcType=INTEGER},
+      url = #{url,jdbcType=VARCHAR},
+      category_id = #{categoryId,jdbcType=INTEGER},
+      thumb_url = #{thumbUrl,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      detail = #{detail,jdbcType=VARCHAR},
+      delete_status = #{deleteStatus,jdbcType=SMALLINT},
+      recycle_date = #{recycleDate,jdbcType=BIGINT},
+      creation_date = #{creationDate,jdbcType=BIGINT},
+      modified_date = #{modifiedDate,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      template_id = #{templateId,jdbcType=BIGINT},
+      spec_values = #{specValues,jdbcType=VARCHAR},
+      category_display_name = #{categoryDisplayName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

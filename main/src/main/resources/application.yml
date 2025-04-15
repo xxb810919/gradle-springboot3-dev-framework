@@ -1,0 +1,57 @@
+# 应用设置
+
+
+spring:
+  web:
+    resources:
+      add-mappings: false
+  mvc:
+    throw-exception-if-no-handler-found: true
+  main:
+    allow-circular-references: false
+  servlet:
+    multipart:
+      max-request-size: 200MB
+      max-file-size: 200MB
+
+  application:
+    name: test
+  profiles:
+    active: dev
+
+server:
+  port: 9010
+  servlet:
+    context-path: /testService
+
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+
+# 日志
+logging:
+  level:
+    root: info
+    org.springframework.boot: info
+    org.apache.ibatis: info
+    com.test.basic.service: info
+
+# 健康检测
+management:
+  health:
+    db:
+      ignore-routing-data-sources: true
+    defaults:
+      enabled: false
+
+
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: is_enable  # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)
+      logic-delete-value: 0 # 逻辑已删除值(默认为 0)
+      logic-not-delete-value: 1 # 逻辑未删除值(默认为 1
+  mapper-locations: classpath*:extend/*.xml
+

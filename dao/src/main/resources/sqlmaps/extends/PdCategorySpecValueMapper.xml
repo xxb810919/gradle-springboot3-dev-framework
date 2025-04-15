@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.test.dao.PdCategorySpecValueMapper" >
+
+
+    <resultMap id="BaseResultMap2" type="com.test.bo.SpecValueBO">
+
+        <result column="pd_category_spec_key_id"  property="specKeyId" />
+        <result column="pd_spec_value_id"  property="specValueId" />
+        <result column="name"  property="specValue" />
+
+    </resultMap>
+
+    <select id="getSpecValue" resultMap="BaseResultMap2">
+        select sv.pd_category_spec_key_id,sv.pd_spec_value_id,v.`name` from pd_category_spec_value sv, pd_spec_value  v
+        where sv.pd_spec_value_id=v.id and sv.pd_category_spec_key_id in (${sepcKeyIds}) order by sv.sort;
+
+
+    </select>
+</mapper>

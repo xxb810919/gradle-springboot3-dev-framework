@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.test.dao.PdTeamsMapper" >
+
+
+
+    <select id="selectUserTeams" resultMap="BaseResultMap">
+        select * from pd_teams
+        where id in( select team_id from pd_team_members where user_id=#{userId})
+    </select>
+
+
+    <update id="disbandTeam" parameterType="com.test.entity.PdTeams">
+        update  pd_teams
+        set is_enable = #{isEnable}, disband_time = #{disbandTime}, team_name=CONCAT(team_name,'_',id,'_',now())
+        where id = #{id}
+
+
+    </update>
+</mapper>

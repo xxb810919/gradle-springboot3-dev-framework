@@ -1,0 +1,132 @@
+plugins {
+    id 'org.springframework.boot' version '3.4.2' apply false // Spring Boot 插件
+    id 'io.spring.dependency-management' version '1.1.4' apply false // 依赖管理插件
+    id 'java-library'// Java 插件
+}
+
+ext {
+    testCommonVersion = "1.0.0-SNAPSHOT"
+    codecVersion = "1.10"
+    commonsLang3Version = "3.4"
+    commonsCollections4Version = "4.4"
+    commonsIoVersion = "2.8.0"
+    guavaVersion = "30.1.1-jre"
+    fastjsonVersion = "1.2.83"
+    sqsMessageLibVersion = "1.0.1"
+    mysqlVersion = "5.1.47"
+    druidVersion = "1.2.24"
+    mybatisSpringVersion = "3.0.4"
+    mybatisVersion = "3.5.19"
+    javaSourceVersion = "1.8"
+    javaTargetVersion = "1.8"
+    fileEncoding = "UTF-8"
+    mavenCompilerPluginVersion = "3.8.1"
+    checkstyleVersion = "3.1.2"
+    androidPublisherVersion = "v3-rev20230418-2.0.0"
+    googleAuthVersion = "1.3.0"
+    googlePlayintegrityVersion = "v1-rev20230529-2.0.0"
+    lombokVersion = "1.18.30"
+//    mybatisPlusVersion = "3.5.1"
+//    junitVersion = "5.10.0"
+    log4jOverSlf4jVersion = "2.1.0-alpha1"
+    logbackVersion = "1.5.16"
+    awsSdkVersion = "1.12.782"
+}
+
+
+allprojects {
+    // 启用注解处理
+    tasks.withType(JavaCompile) {
+        options.annotationProcessorPath = configurations.annotationProcessor
+    }
+
+    group = 'com.test'
+    version = '1.0.0'
+
+
+    repositories {
+
+
+        mavenCentral()  // 使用 Maven Central 仓库
+    }
+}
+
+subprojects {
+
+
+    apply plugin: 'java-library'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    if (project.name != 'main') {
+        bootJar {
+            enabled = false // 禁用 bootJar 任务
+        }
+        jar {
+            enabled = true // 启用普通 jar 任务
+            archiveFileName = "${rootProject.group}.${rootProject.name}-${project.name}-${project.version}.jar"
+
+        }
+    } else {
+        jar {
+            enabled = false
+        }
+
+    }
+    configurations.all {
+        exclude group: "org.apache.logging.log4j", module: "log4j-api"
+        exclude group: "org.apache.logging.log4j", module: "log4j-to-slf4j"
+
+    }
+
+    // 共享依赖
+    dependencies {
+
+        implementation 'org.springframework.boot:spring-boot-starter'
+        implementation 'org.springframework.boot:spring-boot-starter-web'  // Web 依赖
+        implementation 'org.springframework.boot:spring-boot-starter-actuator'  // Actuator 依赖
+        implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+        implementation "org.springframework.boot:spring-boot-starter-validation"
+
+
+        implementation "org.apache.commons:commons-lang3:$commonsLang3Version"
+        implementation "org.apache.commons:commons-collections4:$commonsCollections4Version"
+        implementation "commons-codec:commons-codec:$codecVersion"
+        implementation "commons-io:commons-io:$commonsIoVersion"
+
+        implementation "com.google.guava:guava:$guavaVersion"
+
+        compileOnly "org.projectlombok:lombok:$lombokVersion"
+        annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
+        implementation "mysql:mysql-connector-java:$mysqlVersion"
+        implementation "org.mybatis:mybatis-spring:$mybatisSpringVersion"
+        implementation "org.mybatis:mybatis:$mybatisVersion"
+
+
+        implementation "com.alibaba:fastjson:$fastjsonVersion"
+        implementation "com.alibaba:druid:$druidVersion"
+        implementation "com.amazonaws:amazon-sqs-java-messaging-lib:$sqsMessageLibVersion"
+
+
+        implementation "ch.qos.logback:logback-classic:$logbackVersion"
+
+        implementation "org.slf4j:log4j-over-slf4j:$log4jOverSlf4jVersion"
+
+
+        // JUnit 5 (Jupiter)
+        testImplementation "org.junit.jupiter:junit-jupiter"
+
+        // Spring Boot Test
+        testImplementation('org.springframework.boot:spring-boot-starter-test')
+    }
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
+
+}
+
+
+
+
+

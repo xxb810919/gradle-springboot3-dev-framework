@@ -1,0 +1,45 @@
+dependencies {
+    implementation project(':web')
+    implementation project(':service')
+    implementation project(':dao')
+
+
+}
+
+
+bootJar {
+    archiveFileName = "test.jar"
+    mainClass = 'com.test.Application'
+
+    includes = ['com.test*']
+
+    from(sourceSets.main.output) {
+        into 'BOOT-INF/classes'
+        include '**'
+    }
+
+
+    task copyLibs(type: Copy) {
+        from configurations.runtimeClasspath
+        into "$buildDir/libs/lib"
+
+
+        description = 'Copies runtime dependencies to a separate lib folder'
+    }
+
+
+// Make bootJar depend on copyLibs
+    bootJar.dependsOn copyLibs
+
+
+// Optionally customize the manifest to reference the external lib folder
+//    bootJar {
+//        manifest {
+//            attributes 'Class-Path': configurations.runtimeClasspath.files
+//                    .findAll { !it.name.startsWith('com.test') }
+//                    .collect { "lib/${it.name}" }.join(' ').toString()
+//        }
+//    }
+
+}
+

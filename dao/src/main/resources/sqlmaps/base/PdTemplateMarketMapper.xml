@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.dao.PdTemplateMarketMapper">
+  <resultMap id="BaseResultMap" type="com.test.entity.PdTemplateMarket">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="team_id" jdbcType="BIGINT" property="teamId" />
+    <result column="resource_id" jdbcType="BIGINT" property="resourceId" />
+    <result column="thumb_url" jdbcType="VARCHAR" property="thumbUrl" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="sub_title" jdbcType="VARCHAR" property="subTitle" />
+    <result column="detail" jdbcType="VARCHAR" property="detail" />
+    <result column="release_status" jdbcType="SMALLINT" property="releaseStatus" />
+    <result column="release_date" jdbcType="BIGINT" property="releaseDate" />
+    <result column="last_online_date" jdbcType="BIGINT" property="lastOnlineDate" />
+    <result column="last_offline_date" jdbcType="BIGINT" property="lastOfflineDate" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="category_id" jdbcType="BIGINT" property="categoryId" />
+    <result column="spec_values" jdbcType="VARCHAR" property="specValues" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, team_id, resource_id, thumb_url, name, sub_title, detail, release_status, 
+    release_date, last_online_date, last_offline_date, create_time, update_time, category_id, 
+    spec_values
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pd_template_market
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from pd_template_market
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.test.entity.PdTemplateMarket" useGeneratedKeys="true">
+    insert into pd_template_market (user_id, team_id, resource_id, 
+      thumb_url, name, sub_title, 
+      detail, release_status, release_date, 
+      last_online_date, last_offline_date, create_time, 
+      update_time, category_id, spec_values
+      )
+    values (#{userId,jdbcType=BIGINT}, #{teamId,jdbcType=BIGINT}, #{resourceId,jdbcType=BIGINT}, 
+      #{thumbUrl,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR}, 
+      #{detail,jdbcType=VARCHAR}, #{releaseStatus,jdbcType=SMALLINT}, #{releaseDate,jdbcType=BIGINT}, 
+      #{lastOnlineDate,jdbcType=BIGINT}, #{lastOfflineDate,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{categoryId,jdbcType=BIGINT}, #{specValues,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.test.entity.PdTemplateMarket" useGeneratedKeys="true">
+    insert into pd_template_market
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="teamId != null">
+        team_id,
+      </if>
+      <if test="resourceId != null">
+        resource_id,
+      </if>
+      <if test="thumbUrl != null">
+        thumb_url,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="subTitle != null">
+        sub_title,
+      </if>
+      <if test="detail != null">
+        detail,
+      </if>
+      <if test="releaseStatus != null">
+        release_status,
+      </if>
+      <if test="releaseDate != null">
+        release_date,
+      </if>
+      <if test="lastOnlineDate != null">
+        last_online_date,
+      </if>
+      <if test="lastOfflineDate != null">
+        last_offline_date,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="specValues != null">
+        spec_values,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="teamId != null">
+        #{teamId,jdbcType=BIGINT},
+      </if>
+      <if test="resourceId != null">
+        #{resourceId,jdbcType=BIGINT},
+      </if>
+      <if test="thumbUrl != null">
+        #{thumbUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="subTitle != null">
+        #{subTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null">
+        #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="releaseStatus != null">
+        #{releaseStatus,jdbcType=SMALLINT},
+      </if>
+      <if test="releaseDate != null">
+        #{releaseDate,jdbcType=BIGINT},
+      </if>
+      <if test="lastOnlineDate != null">
+        #{lastOnlineDate,jdbcType=BIGINT},
+      </if>
+      <if test="lastOfflineDate != null">
+        #{lastOfflineDate,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="specValues != null">
+        #{specValues,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.test.entity.PdTemplateMarket">
+    update pd_template_market
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="teamId != null">
+        team_id = #{teamId,jdbcType=BIGINT},
+      </if>
+      <if test="resourceId != null">
+        resource_id = #{resourceId,jdbcType=BIGINT},
+      </if>
+      <if test="thumbUrl != null">
+        thumb_url = #{thumbUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="subTitle != null">
+        sub_title = #{subTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null">
+        detail = #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="releaseStatus != null">
+        release_status = #{releaseStatus,jdbcType=SMALLINT},
+      </if>
+      <if test="releaseDate != null">
+        release_date = #{releaseDate,jdbcType=BIGINT},
+      </if>
+      <if test="lastOnlineDate != null">
+        last_online_date = #{lastOnlineDate,jdbcType=BIGINT},
+      </if>
+      <if test="lastOfflineDate != null">
+        last_offline_date = #{lastOfflineDate,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="specValues != null">
+        spec_values = #{specValues,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.test.entity.PdTemplateMarket">
+    update pd_template_market
+    set user_id = #{userId,jdbcType=BIGINT},
+      team_id = #{teamId,jdbcType=BIGINT},
+      resource_id = #{resourceId,jdbcType=BIGINT},
+      thumb_url = #{thumbUrl,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      sub_title = #{subTitle,jdbcType=VARCHAR},
+      detail = #{detail,jdbcType=VARCHAR},
+      release_status = #{releaseStatus,jdbcType=SMALLINT},
+      release_date = #{releaseDate,jdbcType=BIGINT},
+      last_online_date = #{lastOnlineDate,jdbcType=BIGINT},
+      last_offline_date = #{lastOfflineDate,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      category_id = #{categoryId,jdbcType=BIGINT},
+      spec_values = #{specValues,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

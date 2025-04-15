@@ -1,0 +1,148 @@
+import javax.xml.parsers.SAXParserFactory
+
+
+configurations {
+    mybatisGenerator
+}
+
+dependencies {
+    // MyBatis Generator core
+    mybatisGenerator 'org.mybatis.generator:mybatis-generator-core:1.4.2'
+    // MyBatis runtime (optional, if your project uses MyBatis)
+    mybatisGenerator 'org.mybatis:mybatis:3.5.16'
+    // JDBC driver (example for MySQL; replace with your database driver)
+    mybatisGenerator 'mysql:mysql-connector-java:8.0.33'
+    mybatisGenerator 'com.softwareloop:mybatis-generator-lombok-plugin:1.0'
+}
+// Custom task to run MyBatis Generator
+task MybatisGenerator {
+    description 'Generates MyBatis artifacts using the generator configuration'
+    group 'MyBatis'
+//    doFirst {
+//        // 删除目标 XML 文件
+//        delete fileTree('src/main/resources/sqlmaps') {
+//            include '*.xml'
+//        }
+//    }
+
+    doLast {
+        def generatorConfig = file('src/main/resources/generatorConfig.xml')
+        def modelDir = file('src/main/java/com/test/designer/entity')
+        def mapperDir = file('src/main/resources/sqlmaps/base') // Mapper.xml 目录
+
+
+        if (!generatorConfig.exists() || !modelDir.exists()) {
+            println "generatorConfig.xml 或 model 目录不存在，跳过删除操作。"
+            return
+        }
+
+        def saxFactory = SAXParserFactory.newInstance()
+        saxFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false)  // 允许 DOCTYPE
+        saxFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)  // 禁止外部 DTD 加载
+
+        def xmlParser = new XmlParser(saxFactory.newSAXParser())
+
+        def xml = xmlParser.parse(generatorConfig)
+        def tables = xml.'**'.findAll { it.name() == 'table' }
+
+        tables.each { table ->
+            def domainObjectName = table.@domainObjectName ?: convertToModelName(table.@tableName)
+
+            def modelFile = new File(modelDir, "${domainObjectName}.java")
+
+            if (modelFile.exists()) {
+                println "🗑 删除旧 Model: ${modelFile.absolutePath}"
+                modelFile.delete()
+            }
+
+            def mapperFileName = convertToMapperFileName(table.@tableName)
+
+            def mapperFile = new File(mapperDir, mapperFileName)
+
+            if (mapperFile.exists()) {
+                println "🗑 delete old Mapper XML: ${mapperFile.absolutePath}"
+                mapperFile.delete()
+            }
+        }
+    }
+
+
+    doLast {
+        javaexec {
+            main = 'org.mybatis.generator.api.ShellRunner'
+            classpath = configurations.mybatisGenerator
+            args = [
+                    '-configfile', 'src/main/resources/generatorConfig.xml'
+//                    , '-overwrite'// Overwrites existing files
+                    , '-verbose'
+            ]
+        }
+    }
+
+    doLast {
+        def mapperDir = file('src/main/java/com/test/designer/dao')
+        fileTree(mapperDir).filter {
+            it.name ==~ /.*\.\d+$/
+        }.each {
+            println 'Delete file:' + it.absolutePath
+            it.delete()
+        }
+
+    }
+
+    doLast {
+        def generatorConfig = file('src/main/resources/generatorConfig.xml')
+        def mapperDir = file('src/main/resources/sqlmaps/extends') // Mapper.xml 目录
+
+
+        if (!generatorConfig.exists()) {
+            println "generatorConfig.xml 或 model 目录不存在，跳过删除操作。"
+            return
+        }
+
+        def saxFactory = SAXParserFactory.newInstance()
+        saxFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false)  // 允许 DOCTYPE
+        saxFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)  // 禁止外部 DTD 加载
+
+        def xmlParser = new XmlParser(saxFactory.newSAXParser())
+
+        def xml = xmlParser.parse(generatorConfig)
+        def tables = xml.'**'.findAll { it.name() == 'table' }
+
+        tables.each { table ->
+//            def domainObjectName = table.@domainObjectName ?: convertToModelName(table.@tableName)
+
+            def mapperName = convertToMapperName(table.@tableName)
+            def mapperFileName = convertToMapperFileName(table.@tableName)
+
+            def mapperFile = new File(mapperDir, mapperFileName)
+
+            if (!mapperFile.exists()) {
+                def text = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" +
+                        "<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" \"http://mybatis.org/dtd/mybatis-3-mapper.dtd\" >\n" +
+                        "<mapper namespace=\"com.test.designer.dao.#MapperName#\" >\n" +
+                        "\n" +
+
+                        "</mapper>"
+
+
+                mapperFile.text = text.replace('#MapperName#', mapperName)
+                println "✅ 文件已写入: ${mapperFile.absolutePath}"
+            }
+        }
+
+    }
+}
+
+def convertToModelName(tableName) {
+    return tableName.split('_').collect { it.capitalize() }.join('')
+}
+
+def convertToMapperName(tableName) {
+    return tableName.split('_').collect { it.capitalize() }.join('') + 'Mapper'
+}
+
+def convertToMapperFileName(tableName) {
+    return tableName.split('_').collect { it.capitalize() }.join('') + "Mapper.xml"
+}
+

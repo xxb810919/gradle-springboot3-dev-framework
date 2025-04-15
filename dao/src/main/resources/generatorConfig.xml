@@ -1,0 +1,82 @@
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "https://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <context id="mysqlTables" targetRuntime="MyBatis3">
+
+        <!--        &lt;!&ndash; 添加换行符插件，放在最前面 &ndash;&gt;-->
+        <!--        <plugin type="org.mybatis.generator.plugins.LineDelimiterCodeGeneratorPlugin">-->
+        <!--            &lt;!&ndash; 设置为 \n &ndash;&gt;-->
+        <!--            <property name="lineDelimiter" value="\n"/>-->
+        <!--        </plugin>-->
+
+        <!-- 添加 Lombok 插件 -->
+        <plugin type="com.softwareloop.mybatis.generator.plugins.LombokPlugin">
+            <property name="hasLombok" value="true"/>
+            <!--            <property name="annotations" value="@Data, @NoArgsConstructor, @AllArgsConstructor"/>-->
+
+        </plugin>
+
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+
+        </commentGenerator>
+
+
+        <!-- 数据库连接配置 -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://xx.com:3306/xx?useSSL=false"
+                        userId="user" password="xx">
+            <!-- 只使用指定的数据库 -->
+            <property name="nullCatalogMeansCurrent" value="true"/>
+            <!-- 显式指定数据库 -->
+            <property name="databaseName" value="testDesigner"/>
+            <!-- 禁用获取其他数据库的表信息 -->
+            <property name="useInformationSchema" value="true"/>
+        </jdbcConnection>
+
+        <javaModelGenerator targetPackage="com.test.designer.entity" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="false"/>
+            <property name="lineDelimiter" value="\n"/>
+
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="sqlmaps/base" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+            <property name="lineDelimiter" value="\n"/>
+        </sqlMapGenerator>
+
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.test.designer.dao"
+                             targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="lineDelimiter" value="\n"/>
+        </javaClientGenerator>
+
+
+        <table tableName="pd_folder" enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+            <!--            <columnOverride column="spec_values"-->
+            <!--                            jdbcType="VARCHAR"-->
+            <!--                            javaType="java.lang.String"/>-->
+
+            <!--            <columnOverride column="detail"-->
+            <!--                            jdbcType="VARCHAR"-->
+            <!--                            javaType="java.lang.String"/>-->
+        </table>
+
+
+        <table tableName="pd_category" enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+
+        </table>
+
+
+    </context>
+
+</generatorConfiguration>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.test.dao.PdCategorySpecKeyMapper" >
+
+    <resultMap id="BaseResultMap2" type="com.test.bo.CateogrySpecInfoBO">
+        <result column="category_id"  property="categoryId" />
+        <result column="sepc_key_id"  property="sepcKeyId" />
+        <result column="is_required" property="isRequired" />
+        <result column="data_type"  property="dataType" />
+        <result column="show_type"  property="showType" />
+        <result column="placeholder"  property="placeholder" />
+        <result column="name"  property="name" />
+
+    </resultMap>
+
+
+
+    <select id="getSpecByCategoryId"  resultMap="BaseResultMap2">
+        select ck.category_id, ck.sepc_key_id, k.`name`, ck.is_required, ck.data_type, ck.show_type,
+        ck.placeholder from pd_category_spec_key ck , pd_spec_key k
+        where ck.category_id=k.id and ck.category_id=#{categoryId} order by
+        ck.sort;
+    </select>
+
+</mapper>
